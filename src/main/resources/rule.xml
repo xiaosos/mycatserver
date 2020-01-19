@@ -25,7 +25,7 @@
 
 	<tableRule name="sharding-by-intfile">
 		<rule>
-			<columns>sharding_id</columns>
+			<columns>address</columns>
 			<algorithm>hash-int</algorithm>
 		</rule>
 	</tableRule>
@@ -37,7 +37,7 @@
 	</tableRule>
 	<tableRule name="mod-long">
 		<rule>
-			<columns>id</columns>
+			<columns>name</columns>
 			<algorithm>mod-long</algorithm>
 		</rule>
 	</tableRule>
@@ -55,7 +55,7 @@
 	</tableRule>
 	<tableRule name="sharding-by-month">
 		<rule>
-			<columns>create_time</columns>
+			<columns>createdate</columns>
 			<algorithm>partbymonth</algorithm>
 		</rule>
 	</tableRule>
@@ -80,6 +80,12 @@
 		</rule>
 	</tableRule>
 
+	<tableRule name="partition-by-string-hash">
+		<rule>
+			<columns>cardnum</columns>
+			<algorithm>partition-by-string-hash-function</algorithm>
+		</rule>
+	</tableRule>
 	<function name="murmur"
 		class="io.mycat.route.function.PartitionByMurmurHash">
 		<property name="seed">0</property><!-- 默认是0 -->
@@ -126,5 +132,13 @@
 	
 	<function name="jump-consistent-hash" class="io.mycat.route.function.PartitionByJumpConsistentHash">
 		<property name="totalBuckets">3</property>
+	</function>
+
+
+
+	<function name="partition-by-string-hash-function" class="io.mycat.route.function.PartitionByString">
+		<property name="partitionLength">512</property> <!--求模基数  zero-based -->
+		<property name="partitionCount">2</property> <!-- 分片数量  -->
+		<property name="hashSlice">0:6</property> <!-- hash预算位  -->
 	</function>
 </mycat:rule>
